@@ -1,10 +1,7 @@
-# this module implements layouts
-
-
-class Window:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
+class Layout(object):
+    def __init__(self, size, pos=(0,0)):
+        self.size = size
+        self.pos = pos
 
     def update(self):
         pass
