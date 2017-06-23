@@ -10,17 +10,15 @@ class Game(object):
         self.background_color = background_color
         self.screen = None
 
-    def renderRoot(self, root):
-        root.render(self.screen)
-
     def start(self):
         pygame.display.init()
         pygame.font.init()
+
         self.screen = pygame.display.set_mode(self.dim)
         is_running = True
 
-        root = self.setup()
-        self.renderRoot(root)
+        root = self.render_root()
+        root.render(self.screen)
 
         while is_running:
             self.clock.tick(self.fps)
@@ -35,5 +33,5 @@ class Game(object):
     def render(self):
         raise NotImplementedError
 
-    def setup(self):
+    def render_root(self):
         raise NotImplementedError

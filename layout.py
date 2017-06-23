@@ -1,15 +1,18 @@
+from pos import Pos
+
 class Layout(object):
-    def __init__(self, size, pos=(0,0)):
+    def __init__(self, size, pos=Pos(0,0)):
         self.size = size
         self.pos = pos
+        self.origin = Pos(0, 0)
         self.children = []
-
-    def add(self, child):
-        self.children.append(child)
 
     def _render_children(self, surface):
         for child in self.children:
             child.render(surface)
+
+    def add(self, child):
+        raise NotImplementedError
 
     def render(self, surface):
         raise NotImplementedError
