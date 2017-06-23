@@ -2,9 +2,14 @@ class Layout(object):
     def __init__(self, size, pos=(0,0)):
         self.size = size
         self.pos = pos
+        self.children = []
 
-    def update(self):
-        pass
+    def add(self, child):
+        self.children.append(child)
 
-    def draw(self):
-        pass
+    def _render_children(self, surface):
+        for child in self.children:
+            child.render(surface)
+
+    def render(self, surface):
+        raise NotImplementedError
