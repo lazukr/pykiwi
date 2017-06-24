@@ -9,6 +9,10 @@ class Element(object):
         self.pos = pos
         self.origin = Pos(0, 0)
         self.background_color = background_color
+        self.container = None
+
+    def will_collide(self, mouse_pos):
+        return self.container.collidepoint(mouse_pos)
 
     def render(self, surface):
         raise NotImplementedError
