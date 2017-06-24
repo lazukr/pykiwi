@@ -6,8 +6,8 @@ import pygame
 import colour, styles, orientation
 
 class ListLayout(Layout):
-    def __init__(self, size, pos=Pos(0,0), border=0, orientation=orientation.VERTICAL,
-        spacing=0, scaling=styles.FREE):
+    def __init__(self, size, pos=Pos(0,0), border=0, spacing=0,
+        orientation=orientation.VERTICAL, scaling=styles.FREE):
         
         super(ListLayout, self).__init__(size, pos, border)
         self.next_child_origin = Pos(
