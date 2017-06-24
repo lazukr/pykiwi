@@ -1,7 +1,7 @@
 from pos import Pos
 
 class Layout(object):
-    def __init__(self, size, pos=Pos(0,0), border=1):
+    def __init__(self, size, pos=Pos(0,0), border=0):
         self.size = size
         self.pos = pos
         self.origin = Pos(0, 0)

@@ -3,10 +3,12 @@ from pos import Pos
 from size import Size
 
 import pygame
-import colour
+import colour, styles, orientation
 
 class ListLayout(Layout):
-    def __init__(self, size, pos=Pos(0,0), border=5, orientation="vertical", spacing=2):
+    def __init__(self, size, pos=Pos(0,0), border=0, orientation=orientation.VERTICAL,
+        spacing=0, scaling=styles.FREE):
+        
         super(ListLayout, self).__init__(size, pos, border)
         self.next_child_origin = Pos(
             self.origin.x + self.pos.x + self.border, 
@@ -14,40 +16,17 @@ class ListLayout(Layout):
         )
         self.orientation = orientation
         self.spacing = spacing
+        self.scaling = scaling
 
     def add(self, child):
 
-        if not self.children:
-            self.size = Size(
-                child.size.w + 2*self.border,
-                child.size.h + 2*self.border
-            )
-        else:
-            if self.orientation == "horizontal":
-                self.size = Size(
-                self.size.w + child.size.w + self.spacing, 
-                self.size.h
-            )
-            else:
-                self.size = Size(
-                self.size.w, 
-                self.size.h + child.size.h + self.spacing
-            )
+        if self.scaling:
+            self._rescale_layout(child)
 
         self.children.append(child)
         child.origin = self.next_child_origin
 
-        if self.orientation == "horizontal":
-            self.next_child_origin = Pos(
-                self.next_child_origin.x + child.size.w + self.spacing,
-                self.next_child_origin.y
-            )
-
-        else:
-            self.next_child_origin = Pos(
-                self.next_child_origin.x,
-                self.next_child_origin.y + child.size.h + self.spacing
-            )
+        self._update_child_pos(child)
 
     def render(self, surface):
         rect = (
@@ -59,3 +38,21 @@ class ListLayout(Layout):
         pygame.draw.rect(surface, colour.RED, rect)
 
         self._render_children(surface)
+
+    def _rescale_layout(self, child):
+        if not self.children:
+            self.size = Size(
+                child.size.w + 2*self.border,
+                child.size.h + 2*self.border
+            )
+        else:
+            self.size = Size(
+            self.size.w + (child.size.w + self.spacing)*int(self.orientation), 
+            self.size.h + (child.size.h + self.spacing)*int(not self.orientation)
+            )
+
+    def _update_child_pos(self, child):
+        self.next_child_origin = Pos(
+            self.next_child_origin.x + (child.size.w + self.spacing)*int(self.orientation),
+            self.next_child_origin.y + (child.size.h + self.spacing)*int(not self.orientation)
+        )
