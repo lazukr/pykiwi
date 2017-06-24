@@ -2,20 +2,23 @@ import pygame
 
 SCREEN_SIZE = (640, 480)
 
-class Game:
+class Game(object):
     def __init__(self, dim=SCREEN_SIZE, fps=30, background_color=(255,255,255)):
         self.dim = dim
         self.fps = fps
         self.clock = pygame.time.Clock()
         self.background_color = background_color
-        self.layouts = []
-        self.items = []
+        self.screen = None
 
     def start(self):
         pygame.display.init()
         pygame.font.init()
+
         self.screen = pygame.display.set_mode(self.dim)
         is_running = True
+
+        root = self.render_root()
+        root.render(self.screen)
 
         while is_running:
             self.clock.tick(self.fps)
@@ -28,4 +31,7 @@ class Game:
         pygame.quit()
 
     def render(self):
+        raise NotImplementedError
+
+    def render_root(self):
         raise NotImplementedError
