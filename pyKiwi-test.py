@@ -5,7 +5,9 @@ from button import Button
 from size import Size
 from pos import Pos
 
-import styles, orientation, colour
+import styles
+import orientation
+import colour
 
 class TestGame(Game):
     def __init__(self):

@@ -3,11 +3,19 @@ from pos import Pos
 from size import Size
 
 import pygame
-import colour, styles, orientation
+import colour
+import styles
+import orientation
 
 class ListLayout(Layout):
-    def __init__(self, size, pos=Pos(0,0), border=0, spacing=0,
-        orientation=orientation.VERTICAL, scaling=styles.FREE):
+    def __init__(
+        self,
+        size,
+        pos=Pos(0,0),
+        border=0,
+        spacing=0,
+        orientation=orientation.VERTICAL,
+        scaling=styles.FREE):
         
         super(ListLayout, self).__init__(size, pos, border)
         self.next_child_origin = Pos(
@@ -47,8 +55,8 @@ class ListLayout(Layout):
             )
         else:
             self.size = Size(
-            self.size.w + (child.size.w + self.spacing)*int(self.orientation), 
-            self.size.h + (child.size.h + self.spacing)*int(not self.orientation)
+                self.size.w + (child.size.w + self.spacing)*int(self.orientation), 
+                self.size.h + (child.size.h + self.spacing)*int(not self.orientation)
             )
 
     def _update_child_pos(self, child):
