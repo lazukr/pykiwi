@@ -3,11 +3,13 @@ from listlayout import ListLayout
 from button import Button
 from size import Size
 from pos import Pos
+from text import Text
 
 import styles
 import orientation
 import colour
 import events
+import pygame
 
 def on_button_click():
     print 'button clicked'
@@ -15,15 +17,22 @@ def on_button_click():
 class TestGame(Game):
     def __init__(self):
         super(TestGame, self).__init__()
+        self.view = []
 
     def render_root(self):
-        layout = ListLayout(Size(150, 300), Pos(100,100), 5, 2, orientation.HORIZONTAL, styles.FIT)
+        self.view.append(
+            ListLayout(Size(150, 300), Pos(100,100), 5, 2, orientation.HORIZONTAL, styles.FIT)
+            )
         for i in xrange(6):
             button = Button('Click Me')
-            self.on(button, events.CLICK, on_button_click) 
-            layout.add(button)
+            button.attach_hover(
+                Text(Size(50, 20), str(i), 20)
+            )
+            self.on(button, events.CLICK, on_button_click)
+            self.on(button, events.HOVER)
+            self.view[0].add(button)
 
-        return layout
+        return self.view
 
     def render(self):
         pass
