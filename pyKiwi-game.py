@@ -27,10 +27,7 @@ class Game(object):
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         self.background = pygame.Surface(SCREEN_SIZE)
         self.clock = pygame.time.Clock()
-        self.core = Core()
-
-
-        
+        self.core = Core(self.screen, self.background)        
 
     def initialize(self):
         pygame.display.init()
@@ -39,11 +36,20 @@ class Game(object):
 
         #button = Button('click me', pos=Pos(50, 50))
         # anotherbutton = Button('click me')
-        layout = ListLayout(border=2, spacing=3, pos=Pos(30, 50))
+
+        layout = self.core.create_listlayout(pos=Pos(30, 50), spacing=2, border=3)
+
         for x in range(5):
-            button = Button('click me')
+            button = self.core.create_button(text='click me')
             layout.add_element(button)
 
+
+        another_layout = self.core.create_listlayout(background_colour=colour.WHITE)
+        for x in range(3):
+            another_button = self.core.create_button(text='hi me')
+            another_layout.add_element(another_button)
+
+        # layout.add_element(another_layout)
         
         # # all user custom code should go here
         # # and ui stuff
@@ -60,12 +66,12 @@ class Game(object):
                 if event.type == pygame.QUIT:
                     running = False
 
-                self.core.all_ui.update(event)
+                self.core.update(event)
          
-            self.core.all_ui.clear(self.screen, self.background)
+            self.core.clear()
             
-            dirty = self.core.all_ui.draw(self.screen)
-            pygame.display.update(dirty)       
+            dirty = self.core.draw()
+            pygame.display.update(dirty)
             
 
         pygame.quit()

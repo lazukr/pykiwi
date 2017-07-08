@@ -20,11 +20,6 @@ class ListLayout(Layout):
         background_colour=colour.RED):
         
         super(ListLayout, self).__init__(size, pos, border, background_colour)
-        
-        self.image = pygame.Surface(self.size)
-        self.image.fill(self.background_colour)
-        self.rect = self.image.get_rect()
-        self.rect.move_ip(self.pos)
 
         self.orientation = orientation
         self.spacing = spacing
@@ -52,6 +47,9 @@ class ListLayout(Layout):
                 child.size.w + 2*self.border,
                 child.size.h + 2*self.border
             )
+
+        
+
         else:
             self.size = Size(
                 self.size.w + (child.size.w + self.spacing)*int(self.orientation), 
@@ -68,3 +66,6 @@ class ListLayout(Layout):
             self.next_child_origin.x + (child.size.w + self.spacing)*int(self.orientation),
             self.next_child_origin.y + (child.size.h + self.spacing)*int(not self.orientation)
         )
+
+    def move(self, delta):
+        self.rect.move_ip(delta)

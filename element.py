@@ -6,10 +6,15 @@ from pos import Pos
 class Element(pygame.sprite.DirtySprite):
 
     def __init__(self, size, pos=Pos(0, 0), background_colour=colour.WHITE):
-        pygame.sprite.DirtySprite.__init__(self, self.groups)
+        super(Element, self).__init__(self.groups)
+
         self.background_colour = background_colour
         self.size = size
         self.pos = pos
+        self.image = pygame.Surface(size)
+        self.image.fill(self.background_colour)
+        self.rect = self.image.get_rect()
+        self.rect.move_ip(pos)
 
     def will_collide(self):
         return self.rect.collidepoint(pygame.mouse.get_pos())
