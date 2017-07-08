@@ -6,46 +6,40 @@ import pygame
 import colour
 import styles
 import orientation
+import utils
 
 class ListLayout(Layout):
     def __init__(
         self,
-        size,
+        size=Size(50, 50),
         pos=Pos(0,0),
         border=0,
         spacing=0,
         orientation=orientation.VERTICAL,
-        scaling=styles.FREE):
+        scaling=styles.FIT,
+        background_colour=colour.RED):
         
-        super(ListLayout, self).__init__(size, pos, border)
-        self.next_child_origin = Pos(
-            self.origin.x + self.pos.x + self.border, 
-            self.origin.y + self.pos.y + self.border
-        )
+        super(ListLayout, self).__init__(size, pos, border, background_colour)
+
         self.orientation = orientation
         self.spacing = spacing
         self.scaling = scaling
+        self.next_child_origin = Pos(
+            self.pos.x + self.border,
+            self.pos.y + self.border
+        )
 
-    def add(self, child):
+    def update(self, event):
+        pass
 
+    def add_element(self, child):
         if self.scaling:
             self._rescale_layout(child)
 
         self.children.append(child)
-        child.origin = self.next_child_origin
+        child.move(self.next_child_origin)
 
         self._update_child_pos(child)
-
-    def render(self, surface):
-        rect = (
-            self.origin.x + self.pos.x,
-            self.origin.y + self.pos.y, 
-            self.size.w, 
-            self.size.h
-        )
-        pygame.draw.rect(surface, colour.RED, rect)
-
-        self._render_children(surface)
 
     def _rescale_layout(self, child):
         if not self.children:
@@ -53,14 +47,25 @@ class ListLayout(Layout):
                 child.size.w + 2*self.border,
                 child.size.h + 2*self.border
             )
+
+        
+
         else:
             self.size = Size(
                 self.size.w + (child.size.w + self.spacing)*int(self.orientation), 
                 self.size.h + (child.size.h + self.spacing)*int(not self.orientation)
             )
 
+        self.image = pygame.Surface(self.size)
+        self.image.fill(self.background_colour)
+        self.rect = self.image.get_rect()
+        self.rect.move_ip(self.pos)
+
     def _update_child_pos(self, child):
         self.next_child_origin = Pos(
             self.next_child_origin.x + (child.size.w + self.spacing)*int(self.orientation),
             self.next_child_origin.y + (child.size.h + self.spacing)*int(not self.orientation)
         )
+
+    def move(self, delta):
+        self.rect.move_ip(delta)
